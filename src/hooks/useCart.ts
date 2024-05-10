@@ -1,11 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import { db } from "../data/db.js";
+import { Guitar, CartItem } from "../types/index.js";
 export const useCart = () => {
-    const initialState = () => {
+    const initialState = (): CartItem[] => {
         const state = localStorage.getItem("cart");
         return state ? JSON.parse(state) : [];
     };
-    const [guitarras, setGuitarras] = useState([]);
+    //si le asigno db al state guitarras sin usar useEffect no tenemos que indicar a TS el type
+    // const [guitarras, setGuitarras] = useState(db);
+    const [guitarras, setGuitarras] = useState<Guitar[]>([]);
     const [cart, setCart] = useState(initialState);
 
     const MAX_ITEMS = 5;
@@ -22,15 +25,13 @@ export const useCart = () => {
         saveLocalStorage();
     }, [cart]);
 
-    function addtoCart(item) {
+    function addtoCart(item: Guitar) {
         //Validando si la guitarra ya esta agregada
         const exist = cart.findIndex((c) => c.id === item.id);
         console.log(exist);
         if (exist === -1) {
-            item.quantity = 1;
-            setCart([...cart, item]);
-            //otra opcion tomando en cuenta ya sabe que hay en el state desde que se lo declara va a estar asociada con el state de cart (aqui prevCart toma el valor de cart )
-            // setCart((prevCart)=>[...prevCart,item])
+            const newItem: CartItem = { ...item, quantity: 1 };
+            setCart([...cart, newItem]);
         } else {
             if (cart[exist].quantity < MAX_ITEMS) {
                 const updateCart = [...cart];
@@ -38,7 +39,6 @@ export const useCart = () => {
                 setCart(updateCart);
             }
         }
-        console.log(item.quantity);
     }
 
     function removeCart(id) {

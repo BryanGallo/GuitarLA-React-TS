@@ -5,3 +5,10 @@ export type Guitar = {
     description: string;
     price: number;
 };
+export type CartItem = Guitar & {
+    quantity: number;
+};
+
+// export interface GuitarProps extends Guitar{
+//     quantity: number;
+// }
