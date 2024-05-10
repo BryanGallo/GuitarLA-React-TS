@@ -77,15 +77,12 @@ export const useCart = () => {
 
     //Usando UseMemo y con este hook es para el performance par que no haga render hasta que cambie algo que te paso en el arreglo de dependencias en este caso cart
     const isEmpty = useMemo(() => cart.length === 0, [cart]);
-    // const isEmpty = () => cart.length === 0;
-    const cartTotal = () =>
-        //calculando el total del carrito
-        cart.reduce((total, item) => total + item.quantity * item.price, 0);
+
     //sin stateDerivado
-    // const cartTotal = cart.reduce(
-    //     (total, guitar) => total + guitar.price * guitar.quantity,
-    //     0
-    // );
+    const cartTotal = cart.reduce(
+        (total, guitar) => total + guitar.price * guitar.quantity,
+        0
+    );
 
     return {
         cart,
