@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { db } from "../data/db.js";
-import { Guitar, CartItem } from "../types/index.js";
+import { Guitar, CartItem, GuitarID } from "../types/index.js";
 export const useCart = () => {
     const initialState = (): CartItem[] => {
         const state = localStorage.getItem("cart");
@@ -41,12 +41,12 @@ export const useCart = () => {
         }
     }
 
-    function removeCart(id) {
+    function removeCart(id: GuitarID) {
         const prevCart = cart.filter((item) => item.id !== id);
         setCart(prevCart);
     }
 
-    function increaseQuantity(id) {
+    function increaseQuantity(id: GuitarID) {
         const updateCart = cart.map((item) => {
             if (item.id === id && item.quantity < MAX_ITEMS) {
                 const up = { ...item, quantity: item.quantity + 1 };
@@ -57,7 +57,7 @@ export const useCart = () => {
         setCart(updateCart);
     }
 
-    function decreaseQuantity(id) {
+    function decreaseQuantity(id: Guitar["id"]) {
         console.log(id);
         const updateCart = cart.map((item) => {
             if (item.id === id && item.quantity > MIN_ITEMS) {
